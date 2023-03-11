@@ -1,0 +1,22 @@
+.save-button {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #000000;
+  border-radius: 2px;
+  color: #ffffff;
+  transition: opacity 0.4s;
+}
+.save-button:hover {
+  opacity: 0.8;
+}
+.save-button:active {
+  transform: scale(1.02, 1.04);
+}
+
+@media (max-width: 767px) {
+  .save-button {
+    height: 46px;
+  }
+}

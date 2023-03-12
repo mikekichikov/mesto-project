@@ -1,5 +1,6 @@
 .element {
   max-width: min-content;
+  max-height: 361px;
   border-radius: 10px;
   background-color: #ffffff;
   overflow: hidden;

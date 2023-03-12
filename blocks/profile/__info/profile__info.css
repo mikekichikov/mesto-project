@@ -1,7 +1,7 @@
 .profile__info {
   position: relative;
   display: grid;
-  grid-template-columns: max-content auto;
+  grid-template-columns: min-content min-content;
   gap: 16px 18px;
   grid-template-areas:
     "heading button"
@@ -10,11 +10,12 @@
 
 @media (max-width: 1023px) {
   .profile__info {
-    gap: 14px 10px;
+    gap: 10px 10px;
   }
 }
 @media (max-width: 767px) {
   .profile__info {
-    padding: 26px 0 36px;
+    padding: 25px 0 33px 20px;
+    justify-content: center;
   }
 }

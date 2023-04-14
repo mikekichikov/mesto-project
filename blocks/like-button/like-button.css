@@ -16,6 +16,3 @@
 .like-button:active {
   transform: scale(1.1, 1.1);
 }
-.like-button:focus {
-  background-image: url(../../images/like_btn_focused.svg);
-}

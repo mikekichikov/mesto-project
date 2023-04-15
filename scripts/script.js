@@ -1,11 +1,10 @@
 const editBtn = document.querySelector('.edit-button');
 const addBtn = document.querySelector('.add-button');
-const closeBtn = document.querySelectorAll('.close-button');
-const saveBtn = document.querySelectorAll('.save-button');
+const closeButtons = document.querySelectorAll('.close-button');
 const editProfileBtn = document.querySelector('.editProfileBtn');
 const addNewCardBtn = document.querySelector('.addNewCardBtn');
 
-const popup = document.querySelectorAll('.popup');
+const popups = document.querySelectorAll('.popup');
 const popupEditProfile = document.querySelector('.popup-edit');
 const popupAddCard = document.querySelector('.popup-add-card');
 
@@ -114,7 +113,7 @@ editBtn.addEventListener('click', () => openPopup (popupEditProfile));
 
 addBtn.addEventListener('click', () => openPopup (popupAddCard));
 
-closeBtn.forEach((item) => {
+closeButtons.forEach((item) => {
   item.addEventListener("click", (evt) => closePopup(evt));
 });
 

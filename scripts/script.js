@@ -106,9 +106,7 @@ function handleProfileFormSubmit(evt) {
 
 function handlePlaceFormSubmit(evt) {
   evt.preventDefault();
-  imgName = imageName.value;
-  imgLink = imageLink.value;
-  addCard(imgName, imgLink);
+  addCard(imageName.value, imageLink.value);
   closePopup(popupAddCard);
   addNewCardForm.reset();
 }

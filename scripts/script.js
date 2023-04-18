@@ -64,7 +64,6 @@ function hideClosestPopup(evt) {
   closePopup(evt.target.closest('.popup'))
 };
 
-
 // создание новой карточки
 function createCard(imgName, imgLink) {
   const cardElement = cardTemplate.querySelector('.element').cloneNode(true);

@@ -1,0 +1,18 @@
+.like-button {
+  padding: 0;
+  width: 22px;
+  height: 19px;
+  background-image: url(../../../accets/images/like_btn.svg);
+  background-color: inherit;
+  background-position: center;
+  background-size: cover;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.4s;
+}
+.like-button:hover {
+  opacity: 0.5;
+}
+.like-button:active {
+  transform: scale(1.1, 1.1);
+}

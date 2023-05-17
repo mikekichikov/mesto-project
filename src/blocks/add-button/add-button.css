@@ -1,0 +1,27 @@
+.add-button {
+  padding: 0;
+  width: 150px;
+  height: 50px;
+  background-image: url(../../../accets/images/add_btn.svg);
+  background-color: black;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 22px;
+  border: 2px solid #ffffff;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: opacity 0.5s;
+}
+.add-button:hover {
+  opacity: 0.6;
+}
+.add-button:active {
+  transform: scale(1.01, 1.03);
+}
+
+@media (max-width: 767px) {
+  .add-button {
+    width: 100%;
+    background-size: 16px;
+  }
+}

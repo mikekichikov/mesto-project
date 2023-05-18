@@ -1,8 +1,6 @@
 .element__caption {
   padding: 25px 20px 35px 21px;
   width: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   display: grid;
   grid-template-columns: auto 22px;

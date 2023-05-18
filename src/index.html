@@ -11,7 +11,7 @@
   <header class="header">
     <img 
       class="header__logo"
-      src="%=require('./accets/images/logo.svg')%"
+      src="<%=require('./accets/images/logo.svg')%>"
       alt="логотип Mesto">
   </header>
 
@@ -19,7 +19,7 @@
     <section class="profile">
       <img 
       class="profile__avatar"
-        src="%=require('./accets/images/avatar.jpg')%" 
+        src="<%=require('./accets/images/avatar.jpg')%>" 
         alt="Жак Ив Кусто">
       <div class="profile__info">
         <h1 class="profile__heading">Жак-Ив Кусто</h1>
@@ -46,7 +46,10 @@
         class="element__image">
       <div class="element__caption">
         <h2 class="element__heading"></h2>
-        <button class="like-button" type="button"></button>
+        <div class="element__likes-container">
+          <button class="like-button" type="button"></button>
+          <span class="element__likes-couter">0</span>
+        </div>
       </div>
       <button class="delete-button" type="button" aria-label="удалить"></button>
     </div>

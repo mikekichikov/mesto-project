@@ -1,6 +1,14 @@
 import {
   cardsList,
+  cardTemplate,
+  popupImgContainer,
+  popupImg,
+  popupImgCaption,
 } from './constants.js';
+
+import {
+  openPopup,
+} from './utils.js';
 
 // создание новой карточки
 function createCard(imgName, imgLink) {

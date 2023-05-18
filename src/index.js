@@ -10,9 +10,11 @@ import {
   nameInput,
   jobInput,
   editProfileForm,
+  popupEditProfile,
   imageName,
   imageLink,
   addNewCardForm,
+  popupAddCard,
 } from './components/constants.js';
 
 import {

@@ -11,7 +11,7 @@ import {
 } from './utils.js';
 
 // создание новой карточки
-function createCard(imgName, imgLink) {
+export function createCard(imgName, imgLink) {
   const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
   const elementImage = cardElement.querySelector('.element__image');
   const elementHeading = cardElement.querySelector('.element__heading');
@@ -40,5 +40,6 @@ function createCard(imgName, imgLink) {
 export function addCard (imgName, imgLink){
   const cardElement = createCard(imgName, imgLink);
   cardsList.prepend(cardElement);
+  // cardsList.prepend(card);
 }
 

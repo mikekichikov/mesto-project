@@ -1,12 +1,11 @@
-function openPopup(element) {
-  element.classList.add('popup_opened')
+import {closeByEscape} from './modal.js';
+
+export function openPopup(element) {
+  element.classList.add('popup_opened');
+  document.addEventListener("keydown", closeByEscape);
 };
 
-function closePopup(element) {
-  element.classList.remove('popup_opened')
-};
-
-export {
-  openPopup,
-  closePopup
+export function closePopup(element) {
+  element.classList.remove('popup_opened');
+  document.removeEventListener("keydown", closeByEscape);
 };

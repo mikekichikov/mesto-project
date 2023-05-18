@@ -1,7 +1,6 @@
 import './pages/index.css'; //импорт стилей
 
 import {
-  page,
   initialCards,
   editBtn,
   addBtn,
@@ -22,15 +21,20 @@ import {
   closePopup
 } from './components/utils.js';
 
-import {
-  addCard,
-} from './components/card.js';
-
-import {
-  enableValidation
-} from './components/validate.js';
+import { addCard } from './components/card.js';
+import { closeByMissclick } from './components/modal';
+import { enableValidation } from './components/validate.js';
 
 initialCards.forEach((item) => addCard(item.name, item.link));
+
+closeByMissclick();
+
+editBtn.addEventListener('click', () => {
+  openPopup(popupEditProfile);
+  nameInput.value = profileHeading.textContent;
+  jobInput.value = profileDescription.textContent;
+});
+addBtn.addEventListener('click', () => openPopup(popupAddCard));
 
 //сохранение формы редактирования профиля
 function handleProfileFormSubmit(evt) {
@@ -38,36 +42,32 @@ function handleProfileFormSubmit(evt) {
   profileHeading.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
   closePopup(popupEditProfile);
-}
+};
 editProfileForm.addEventListener('submit', handleProfileFormSubmit);
 
 //сохранение формы новой карточки
 function handlePlaceFormSubmit(evt) {
   evt.preventDefault();
-  imgName = imageName.value;
-  imgLink = imageLink.value;
-  addCard(imgName, imgLink);
+  imgName.textContent = imageName.value;
+  imgLink.textContent = imageLink.value;
+  addCard(cardElement);
   closePopup(popupAddCard);
   addNewCardForm.reset();
 }
 addNewCardForm.addEventListener('submit', handlePlaceFormSubmit);
 
-// кнопки открытия попап 
-editBtn.addEventListener('click', () => openPopup(popupEditProfile));
-addBtn.addEventListener('click', () => openPopup(popupAddCard));
-
 // закрытие попап на клик вне объекта 
-page.addEventListener('click', (evt) => {
-  if (evt.target.classList.contains('popup') || evt.target.classList.contains('close-button')) {
-    closePopup(evt.target.closest('.popup'));
-  };
-});
+// page.addEventListener('click', (evt) => {
+//   if (evt.target.classList.contains('popup') || evt.target.classList.contains('close-button')) {
+//     closePopup(evt.target.closest('.popup'));
+//   };
+// });
 
-// закрытие попап на Esc
-page.addEventListener('keydown', (evt) => {
-  if(evt.key === 'Escape') {
-    closePopup(page.querySelector('.popup_opened'))
-  }
+enableValidation({
+  formSelector: '.popup__input-form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.save-button',
+  inactiveButtonClass: 'save-button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'
 });
-
-enableValidation();

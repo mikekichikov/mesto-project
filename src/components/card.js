@@ -40,6 +40,5 @@ export function createCard(imgName, imgLink) {
 export function addCard (imgName, imgLink){
   const cardElement = createCard(imgName, imgLink);
   cardsList.prepend(cardElement);
-  // cardsList.prepend(card);
 }
 

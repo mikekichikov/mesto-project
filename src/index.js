@@ -39,12 +39,13 @@ addBtn.addEventListener('click', () => openPopup(popupAddCard));
 
 //сохранение формы редактирования профиля
 function handleProfileFormSubmit(evt) {
+  console.log(evt);
   evt.preventDefault();
   profileHeading.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
   closePopup(popupEditProfile);
 };
-editProfileForm.addEventListener('submit', handleProfileFormSubmit);
+editProfileForm.addEventListener('submit', (evt) => handleProfileFormSubmit(evt));
 
 //сохранение формы новой карточки
 function handlePlaceFormSubmit(evt) {
@@ -57,10 +58,7 @@ function handlePlaceFormSubmit(evt) {
   addNewCardForm.reset();
 }
 addNewCardForm.addEventListener('submit', handlePlaceFormSubmit);
-addNewCardBtn.addEventListener('click', (evt) => {
-  console.log(evt.key);
-})
-
+console.log(addNewCardForm);
 enableValidation({
   formSelector: '.popup__input-form',
   inputSelector: '.popup__input',

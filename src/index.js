@@ -14,20 +14,27 @@ import {
   imageLink,
   addNewCardForm,
   popupAddCard,
+  addNewCardBtn,
 } from './components/constants.js';
+
+// import {
+  
+// } from './components/utils.js';
+
+import { addCard } from './components/card.js';
 
 import {
   openPopup,
-  closePopup
-} from './components/utils.js';
-
-import { addCard } from './components/card.js';
-import { closeByMissclick } from './components/modal';
+  closePopup,
+  closeByOverlay, 
+  disabledSaveButton,
+ } from './components/modal.js';
+ 
 import { enableValidation } from './components/validate.js';
 
 initialCards.forEach((item) => addCard(item.name, item.link));
 
-closeByMissclick();
+closeByOverlay();
 
 editBtn.addEventListener('click', () => {
   openPopup(popupEditProfile);
@@ -52,6 +59,7 @@ function handlePlaceFormSubmit(evt) {
   const imgLink = imageLink.value;
   addCard(imgName, imgLink);
   closePopup(popupAddCard);
+  disabledSaveButton(addNewCardBtn)
   addNewCardForm.reset();
 }
 addNewCardForm.addEventListener('submit', handlePlaceFormSubmit);

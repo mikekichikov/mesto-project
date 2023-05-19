@@ -1,23 +1,35 @@
-import { page } from "./constants";
-import { closePopup } from "./utils";
+import { popups } from "./constants";
+// import { closePopup } from "./utils";
 
-export function closeByMissclick() {
-  page.addEventListener('click', (evt) => {
-    if (evt.target.classList.contains('popup') || evt.target.classList.contains('close-button')) {
-      closePopup(evt.target.closest('.popup'));
-      };
-  });
+export function openPopup(element) {
+  element.classList.add('popup_opened');
+  document.addEventListener("keydown", closeByEscape);
+};
+
+export function closePopup(element) {
+  element.classList.remove('popup_opened');
+  document.removeEventListener("keydown", closeByEscape);
+};
+
+export function closeByOverlay() {
+  popups.forEach(item => {
+    item.addEventListener('click', (evt) => {
+      if (evt.target.classList.contains('popup_opened') || evt.target.classList.contains('close-button')) {
+          closePopup(item);
+      }
+    })
+  })
 }
 
 export function closeByEscape(evt) {
-  if(evt.key == 'Escape') {
+  if(evt.key === 'Escape') {
     const popupOpened = document.querySelector('.popup_opened');
     closePopup(popupOpened);
   }
 }
 
-// export function disabledSaveButton(button) {
-//   const buttonDisabled = document.querySelector(button);
-//   buttonDisabled.disabled = true;
-//   buttonDisabled.classList.add("save-button_disabled");
-// }
+export function disabledSaveButton(elem) {
+  const buttonDisabled = elem;
+  buttonDisabled.disabled = true;
+  buttonDisabled.classList.add("save-button_disabled");
+}

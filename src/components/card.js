@@ -8,7 +8,7 @@ import {
 
 import {
   openPopup,
-} from './utils.js';
+} from './modal.js';
 
 // создание новой карточки
 export function createCard(imgName, imgLink) {

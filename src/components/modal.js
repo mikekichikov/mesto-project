@@ -15,3 +15,9 @@ export function closeByEscape(evt) {
     closePopup(popupOpened);
   }
 }
+
+export function disabledSaveButton(button) {
+  const buttonDisabled = document.querySelector(button);
+  buttonDisabled.disabled = true;
+  buttonDisabled.classList.add("save-button_disabled");
+}

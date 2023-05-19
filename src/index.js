@@ -14,6 +14,7 @@ import {
   imageLink,
   addNewCardForm,
   popupAddCard,
+  addNewCardBtn,
 } from './components/constants.js';
 
 import {
@@ -22,7 +23,7 @@ import {
 } from './components/utils.js';
 
 import { addCard } from './components/card.js';
-import { closeByMissclick } from './components/modal';
+import { closeByMissclick, disabledSaveButton } from './components/modal';
 import { enableValidation } from './components/validate.js';
 
 initialCards.forEach((item) => addCard(item.name, item.link));
@@ -48,20 +49,17 @@ editProfileForm.addEventListener('submit', handleProfileFormSubmit);
 //сохранение формы новой карточки
 function handlePlaceFormSubmit(evt) {
   evt.preventDefault();
-  imgName.textContent = imageName.value;
-  imgLink.textContent = imageLink.value;
-  addCard(cardElement);
+  const imgName = imageName.value;
+  const imgLink = imageLink.value;
+  addCard(imgName, imgLink);
+  disabledSaveButton(addNewCardBtn);
   closePopup(popupAddCard);
   addNewCardForm.reset();
 }
 addNewCardForm.addEventListener('submit', handlePlaceFormSubmit);
-
-// закрытие попап на клик вне объекта 
-// page.addEventListener('click', (evt) => {
-//   if (evt.target.classList.contains('popup') || evt.target.classList.contains('close-button')) {
-//     closePopup(evt.target.closest('.popup'));
-//   };
-// });
+addNewCardBtn.addEventListener('click', (evt) => {
+  console.log(evt.key);
+})
 
 enableValidation({
   formSelector: '.popup__input-form',

@@ -1,5 +1,4 @@
 import { popups } from "./constants";
-// import { closePopup } from "./utils";
 
 export function openPopup(element) {
   element.classList.add('popup_opened');

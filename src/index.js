@@ -1,7 +1,6 @@
 import './pages/index.css'; //импорт стилей
 
 import {
-  initialCards,
   editBtn,
   addBtn,
   profileHeading,
@@ -17,11 +16,8 @@ import {
   addNewCardBtn,
 } from './components/constants.js';
 
-// import {
-  
-// } from './components/utils.js';
-
 import { addCard } from './components/card.js';
+import { initialCards } from './components/utils';
 
 import {
   openPopup,
@@ -29,7 +25,7 @@ import {
   closeByOverlay, 
   disabledSaveButton,
  } from './components/modal.js';
- 
+
 import { enableValidation } from './components/validate.js';
 
 initialCards.forEach((item) => addCard(item.name, item.link));

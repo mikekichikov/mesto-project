@@ -14,7 +14,6 @@ import {
   imageLink,
   addNewCardForm,
   popupAddCard,
-  addNewCardBtn,
 } from './components/constants.js';
 
 import {
@@ -23,7 +22,7 @@ import {
 } from './components/utils.js';
 
 import { addCard } from './components/card.js';
-import { closeByMissclick, disabledSaveButton } from './components/modal';
+import { closeByMissclick } from './components/modal';
 import { enableValidation } from './components/validate.js';
 
 initialCards.forEach((item) => addCard(item.name, item.link));
@@ -39,13 +38,12 @@ addBtn.addEventListener('click', () => openPopup(popupAddCard));
 
 //сохранение формы редактирования профиля
 function handleProfileFormSubmit(evt) {
-  console.log(evt);
   evt.preventDefault();
   profileHeading.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
   closePopup(popupEditProfile);
 };
-editProfileForm.addEventListener('submit', (evt) => handleProfileFormSubmit(evt));
+editProfileForm.addEventListener('submit', handleProfileFormSubmit);
 
 //сохранение формы новой карточки
 function handlePlaceFormSubmit(evt) {
@@ -53,12 +51,11 @@ function handlePlaceFormSubmit(evt) {
   const imgName = imageName.value;
   const imgLink = imageLink.value;
   addCard(imgName, imgLink);
-  disabledSaveButton(addNewCardBtn);
   closePopup(popupAddCard);
   addNewCardForm.reset();
 }
 addNewCardForm.addEventListener('submit', handlePlaceFormSubmit);
-console.log(addNewCardForm);
+
 enableValidation({
   formSelector: '.popup__input-form',
   inputSelector: '.popup__input',

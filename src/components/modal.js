@@ -26,9 +26,3 @@ export function closeByEscape(evt) {
     closePopup(popupOpened);
   }
 }
-
-export function disabledSaveButton(elem) {
-  const buttonDisabled = elem;
-  buttonDisabled.disabled = true;
-  buttonDisabled.classList.add("save-button_disabled");
-}

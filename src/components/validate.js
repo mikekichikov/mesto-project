@@ -29,10 +29,14 @@ function hasInvalidInput (inputList) {
     return !inputElement.validity.valid;
   })
 }
+export function disabledSaveButton(elem) {
+  const buttonDisabled = elem;
+  buttonDisabled.disabled = true;
+  buttonDisabled.classList.add("save-button_disabled");
+}
 function toggleButtonState(inputList, buttonElement, formObj) {
   if(hasInvalidInput(inputList)) {
-    buttonElement.disabled = true;
-    buttonElement.classList.add(formObj.inactiveButtonClass);
+    disabledSaveButton(buttonElement);
   } else {
     buttonElement.disabled = false;
     buttonElement.classList.remove(formObj.inactiveButtonClass);

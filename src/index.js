@@ -23,10 +23,9 @@ import {
   openPopup,
   closePopup,
   closeByOverlay, 
-  disabledSaveButton,
  } from './components/modal.js';
 
-import { enableValidation } from './components/validate.js';
+import { enableValidation, disabledSaveButton } from './components/validate.js';
 
 initialCards.forEach((item) => addCard(item.name, item.link));
 

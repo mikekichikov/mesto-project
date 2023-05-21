@@ -1,25 +1,27 @@
 // кнопки
 export const editBtn = document.querySelector('.edit-button');
 export const addBtn = document.querySelector('.add-button');
+export const avatarBtn = document.querySelector('.profile__avatar-button');
 export const closeButtons = document.querySelectorAll('.close-button');
-// export const editAvatarBtn = document.querySelector('.editAvatarBtn');
+export const editAvatarBtn = document.querySelector('.editAvatarBtn');
 export const editProfileBtn = document.querySelector('.editProfileBtn');
 export const addNewCardBtn = document.querySelector('.addNewCardBtn');
 
 export const page = document.querySelector('.page');
+export const profileAvatar = document.querySelector('.profile__avatar');
 export const profileHeading = document.querySelector('.profile__heading');
 export const profileDescription = document.querySelector('.profile__description');
 // формы
-// export const editAvatarForm = document.querySelector('.editAvatarForm');
+export const editAvatarForm = document.querySelector('.editAvatarForm');
 export const editProfileForm = document.querySelector('.editProfileForm');
 export const addNewCardForm = document.querySelector('.addNewCardForm');
 // попапы
 export const popups = document.querySelectorAll('.popup');
-// export const popupEditAvatar = document.querySelector('.popup-avatar');
+export const popupEditAvatar = document.querySelector('.popup-avatar');
 export const popupEditProfile = document.querySelector('.popup-edit');
 export const popupAddCard = document.querySelector('.popup-add-card');
 // поля ввода
-// export const avatarInput = document.querySelector('.popup__input_avatarURL');
+export const avatarInput = document.querySelector('.popup__input_avatarURL');
 export const nameInput = document.querySelector('.popup__input_type_name');
 export const jobInput = document.querySelector('.popup__input_type_job');
 export const imageName = document.querySelector('.popup__input_type_place');

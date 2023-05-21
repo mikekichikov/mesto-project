@@ -1,3 +1,4 @@
+import { formObj } from "./constants";
 // валидация форм
 function showInputError(formElement, inputElement, errorMessage, formObj) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
@@ -29,14 +30,14 @@ function hasInvalidInput (inputList) {
     return !inputElement.validity.valid;
   })
 }
-export function disabledSaveButton(elem) {
+export function disableSaveButton(elem) {
   const buttonDisabled = elem;
   buttonDisabled.disabled = true;
-  buttonDisabled.classList.add("save-button_disabled");
+  buttonDisabled.classList.add(formObj.inactiveButtonClass);
 }
 function toggleButtonState(inputList, buttonElement, formObj) {
   if(hasInvalidInput(inputList)) {
-    disabledSaveButton(buttonElement);
+    disableSaveButton(buttonElement);
   } else {
     buttonElement.disabled = false;
     buttonElement.classList.remove(formObj.inactiveButtonClass);

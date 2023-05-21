@@ -14,6 +14,7 @@ import {
   addNewCardForm,
   popupAddCard,
   addNewCardBtn,
+  formObj
 } from './components/constants.js';
 
 import { addCard } from './components/card.js';
@@ -25,7 +26,7 @@ import {
   closeByOverlay, 
  } from './components/modal.js';
 
-import { enableValidation, disabledSaveButton } from './components/validate.js';
+import { enableValidation, disableSaveButton } from './components/validate.js';
 
 initialCards.forEach((item) => addCard(item.name, item.link));
 
@@ -54,16 +55,9 @@ function handlePlaceFormSubmit(evt) {
   const imgLink = imageLink.value;
   addCard(imgName, imgLink);
   closePopup(popupAddCard);
-  disabledSaveButton(addNewCardBtn)
+  disableSaveButton(addNewCardBtn)
   addNewCardForm.reset();
 }
 addNewCardForm.addEventListener('submit', handlePlaceFormSubmit);
 
-enableValidation({
-  formSelector: '.popup__input-form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.save-button',
-  inactiveButtonClass: 'save-button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_active'
-});
+enableValidation(formObj);

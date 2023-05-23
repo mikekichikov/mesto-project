@@ -40,3 +40,4 @@ export const formObj = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_active'
 }
+export const myId = '1a595976abb83992213a7e1b';

@@ -4,8 +4,6 @@ import {
   avatarBtn,
   editBtn,
   addBtn,
-  editAvatarBtn,
-  addNewCardBtn,
   profileAvatar,
   profileHeading,
   profileDescription,
@@ -15,69 +13,104 @@ import {
   popupEditAvatar,
   popupEditProfile,
   popupAddCard,
+  avatarInput,
   nameInput,
   jobInput,
   imageName,
   imageLink,
   formObj,
-  avatarInput
 } from './components/constants.js';
-
-import { addCard } from './components/card.js';
-import { initialCards } from './components/utils';
 
 import {
   openPopup,
   closePopup,
   closeByOverlay, 
- } from './components/modal.js';
+} from './components/modal.js';
 
-import { enableValidation, disableSaveButton } from './components/validate.js';
+import { 
+  addCard,
+  createCard,
+} from './components/card.js';
 
-initialCards.forEach((item) => addCard(item.name, item.link));
+import { 
+  getProfile,
+  getCards,
+  patchAvatar,
+  patchProfile,
+  postCard,
+} from './components/api';
 
-closeByOverlay();
+import {
+  renderProfile,
+  renderAvatar,
+} from './components/utils';
 
-avatarBtn.addEventListener('click', () => openPopup(popupEditAvatar));
-editBtn.addEventListener('click', () => {
-  openPopup(popupEditProfile);
-  nameInput.value = profileHeading.textContent;
-  jobInput.value = profileDescription.textContent;
-});
-addBtn.addEventListener('click', () => openPopup(popupAddCard));
+ import { enableValidation } from './components/validate.js';
+ 
+ closeByOverlay();
+ enableValidation(formObj);
+
+ //  кнопки открытия попапов
+ avatarBtn.addEventListener('click', () => openPopup(popupEditAvatar));
+ editBtn.addEventListener('click', () => {
+   openPopup(popupEditProfile);
+   nameInput.value = profileHeading.textContent;
+   jobInput.value = profileDescription.textContent;
+ });
+ addBtn.addEventListener('click', () => openPopup(popupAddCard));
+
+//  получение данных с сервера
+ Promise.all([getProfile(), getCards()])
+  .then(([profileData, cardsData]) => {
+    renderProfile(profileData.name, profileData.about);
+    renderAvatar(profileData.avatar);
+    cardsData.forEach((card) => {
+      addCard(createCard(card.link, card.name, card._id, card.likes, card.owner._id));
+    })
+  })
+  .catch(([profileDataErr, cardsDataErr]) => {
+    console.log(`Ошибка: ${profileDataErr}`);
+    console.log(`Ошибка: ${cardsDataErr}`);
+  });
 
 //сохранение формы аватара профиля
 function handleAvatarFormSubmit(evt) {
   evt.preventDefault();
-  profileAvatar.src = avatarInput.value;
-  closePopup(popupEditAvatar);
-  disableSaveButton(editAvatarBtn);
-  editAvatarForm.reset();
+  patchAvatar(avatarInput.value)
+    .then((profile) => {
+      renderAvatar(profile.avatar);
+      closePopup(popupEditAvatar);
+    })
+    .catch((err) => {
+      console.log(`Ошибка: ${err}`);
+    })
 }
-
 editAvatarForm.addEventListener('submit', handleAvatarFormSubmit);
 
 //сохранение формы редактирования профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  profileHeading.textContent = nameInput.value;
-  profileDescription.textContent = jobInput.value;
-  closePopup(popupEditProfile);
-};
-
+  patchProfile(nameInput.value, jobInput.value)
+    .then((profileData) => {
+      renderProfile(profileData.name, profileData.about);
+      closePopup(popupEditProfile);
+    })
+    .catch((err) => {
+      console.log(`Ошибка: ${err}`);
+    })
+}
 editProfileForm.addEventListener('submit', handleProfileFormSubmit);
 
 //сохранение формы новой карточки
 function handlePlaceFormSubmit(evt) {
   evt.preventDefault();
-  const imgName = imageName.value;
-  const imgLink = imageLink.value;
-  addCard(imgName, imgLink);
-  closePopup(popupAddCard);
-  disableSaveButton(addNewCardBtn)
-  addNewCardForm.reset();
+  postCard(imageName.value, imageLink.value)
+    .then((card) => {
+      addCard(createCard( card.link, card.name, card._id, card.likes, card.owner._id));
+      closePopup(popupAddCard);
+    })
+    .catch((err) => {
+      console.log(`Ошибка: ${err}`);
+    })
 }
-
 addNewCardForm.addEventListener('submit', handlePlaceFormSubmit);
-
-enableValidation(formObj);

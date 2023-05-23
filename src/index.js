@@ -64,7 +64,7 @@ import {
   .then(([profileData, cardsData]) => {
     renderProfile(profileData.name, profileData.about);
     renderAvatar(profileData.avatar);
-    cardsData.forEach((card) => {
+    cardsData.reverse().forEach((card) => {
       addCard(createCard(card.link, card.name, card._id, card.likes, card.owner._id));
     })
   })
@@ -84,6 +84,7 @@ function handleAvatarFormSubmit(evt) {
     .catch((err) => {
       console.log(`Ошибка: ${err}`);
     })
+  editAvatarForm.reset();
 }
 editAvatarForm.addEventListener('submit', handleAvatarFormSubmit);
 
@@ -112,5 +113,6 @@ function handlePlaceFormSubmit(evt) {
     .catch((err) => {
       console.log(`Ошибка: ${err}`);
     })
+  addNewCardForm.reset();
 }
 addNewCardForm.addEventListener('submit', handlePlaceFormSubmit);

@@ -18,6 +18,7 @@ import {
   imageName,
   imageLink,
   formObj,
+  submitObj,
 } from '../components/constants.js';
 
 import {
@@ -42,24 +43,25 @@ import {
 import {
   renderProfile,
   renderAvatar,
+  renderLoading,
 } from '../components/utils';
 
- import { enableValidation } from '../components/validate.js';
- 
- closeByOverlay();
- enableValidation(formObj);
+import { enableValidation } from '../components/validate.js';
 
- //  кнопки открытия попапов
- avatarBtn.addEventListener('click', () => openPopup(popupEditAvatar));
- editBtn.addEventListener('click', () => {
-   openPopup(popupEditProfile);
-   nameInput.value = profileHeading.textContent;
-   jobInput.value = profileDescription.textContent;
- });
- addBtn.addEventListener('click', () => openPopup(popupAddCard));
+closeByOverlay();
+enableValidation(formObj);
+
+//  кнопки открытия попапов
+avatarBtn.addEventListener('click', () => openPopup(popupEditAvatar));
+editBtn.addEventListener('click', () => {
+  openPopup(popupEditProfile);
+  nameInput.value = profileHeading.textContent;
+  jobInput.value = profileDescription.textContent;
+});
+addBtn.addEventListener('click', () => openPopup(popupAddCard));
 
 //  получение данных с сервера
- Promise.all([getProfile(), getCards()])
+Promise.all([getProfile(), getCards()])
   .then(([profileData, cardsData]) => {
     renderProfile(profileData.name, profileData.about);
     renderAvatar(profileData.avatar);
@@ -75,6 +77,7 @@ import {
 //сохранение формы аватара профиля
 function handleAvatarFormSubmit(evt) {
   evt.preventDefault();
+  renderLoading(true, editAvatarForm, submitObj.saving, submitObj.save);
   patchAvatar(avatarInput.value)
     .then((profile) => {
       renderAvatar(profile.avatar);
@@ -83,6 +86,9 @@ function handleAvatarFormSubmit(evt) {
     .catch((err) => {
       console.log(`Ошибка: ${err}`);
     })
+    .finally(() => {
+      renderLoading(false, editAvatarForm, submitObj.saving, submitObj.save);
+    });
   editAvatarForm.reset();
 }
 editAvatarForm.addEventListener('submit', handleAvatarFormSubmit);
@@ -90,6 +96,7 @@ editAvatarForm.addEventListener('submit', handleAvatarFormSubmit);
 //сохранение формы редактирования профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
+  renderLoading(true, editProfileForm, submitObj.saving, submitObj.save);
   patchProfile(nameInput.value, jobInput.value)
     .then((profileData) => {
       renderProfile(profileData.name, profileData.about);
@@ -98,12 +105,16 @@ function handleProfileFormSubmit(evt) {
     .catch((err) => {
       console.log(`Ошибка: ${err}`);
     })
+    .finally(() => {
+      renderLoading(false, editProfileForm, submitObj.saving, submitObj.save);
+    });
 }
 editProfileForm.addEventListener('submit', handleProfileFormSubmit);
 
 //сохранение формы новой карточки
 function handlePlaceFormSubmit(evt) {
   evt.preventDefault();
+  renderLoading(true, addNewCardForm, submitObj.saving, submitObj.create);
   postCard(imageName.value, imageLink.value)
     .then((card) => {
       addCard(createCard( card.link, card.name, card._id, card.likes, card.owner._id));
@@ -112,6 +123,9 @@ function handlePlaceFormSubmit(evt) {
     .catch((err) => {
       console.log(`Ошибка: ${err}`);
     })
+    .finally(() => {
+      renderLoading(false, addNewCardForm, submitObj.saving, submitObj.create);
+    });
   addNewCardForm.reset();
 }
 addNewCardForm.addEventListener('submit', handlePlaceFormSubmit);

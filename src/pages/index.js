@@ -1,10 +1,9 @@
-import './pages/index.css'; //импорт стилей
+import './index.css'; //импорт стилей
 
 import {
   avatarBtn,
   editBtn,
   addBtn,
-  profileAvatar,
   profileHeading,
   profileDescription,
   editAvatarForm,
@@ -19,18 +18,18 @@ import {
   imageName,
   imageLink,
   formObj,
-} from './components/constants.js';
+} from '../components/constants.js';
 
 import {
   openPopup,
   closePopup,
   closeByOverlay, 
-} from './components/modal.js';
+} from '../components/modal.js';
 
 import { 
   addCard,
   createCard,
-} from './components/card.js';
+} from '../components/card.js';
 
 import { 
   getProfile,
@@ -38,14 +37,14 @@ import {
   patchAvatar,
   patchProfile,
   postCard,
-} from './components/api';
+} from '../components/api';
 
 import {
   renderProfile,
   renderAvatar,
-} from './components/utils';
+} from '../components/utils';
 
- import { enableValidation } from './components/validate.js';
+ import { enableValidation } from '../components/validate.js';
  
  closeByOverlay();
  enableValidation(formObj);

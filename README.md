@@ -13,4 +13,4 @@
 - JavaScript
 - Webpack
 
-<!-- [Посмотреть проект](https://mikekichikov.github.io./mesto-project/src/index.html "Проект на GitHub Pages") -->
+[Посмотреть проект](https://mikekichikov.github.io/mesto-project/ "Проект на GitHub Pages")

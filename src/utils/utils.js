@@ -1,15 +1,13 @@
 import {
-  profileHeading,
-  profileDescription,
-  profileAvatar,
+  profileObj
 } from './constants';
 
 export function renderProfile(name, about) {
-  profileHeading.textContent = name;
-  profileDescription.textContent = about;
+  profileObj.heading.textContent = name;
+  profileObj.description.textContent = about;
 }
 export function renderAvatar(avatar) {
-  profileAvatar.src = avatar;
+  profileObj.avatar.src = avatar;
 }
 export function renderLoading(isLoading, formElement, loadingValue, baseValue) {
   const buttonElement = formElement.querySelector('.save-button');

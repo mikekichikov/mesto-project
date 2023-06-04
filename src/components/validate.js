@@ -1,4 +1,4 @@
-import { formObj } from "./constants";
+import { formObj } from "../utils/constants";
 // валидация форм
 function showInputError(formElement, inputElement, errorMessage, formObj) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);

@@ -1,25 +1,16 @@
 import './index.css'; //импорт стилей
 
 import {
-  avatarBtn,
-  editBtn,
-  addBtn,
-  profileHeading,
-  profileDescription,
-  editAvatarForm,
-  editProfileForm,
-  addNewCardForm,
+  buttons,
+  profileObj,
+  forms,
   popupEditAvatar,
   popupEditProfile,
   popupAddCard,
-  avatarInput,
-  nameInput,
-  jobInput,
-  imageName,
-  imageLink,
+  inputs,
   formObj,
   submitObj,
-} from '../components/constants.js';
+} from '../utils/constants.js';
 
 import {
   openPopup,
@@ -32,19 +23,13 @@ import {
   createCard,
 } from '../components/card.js';
 
-import { 
-  getProfile,
-  getCards,
-  patchAvatar,
-  patchProfile,
-  postCard,
-} from '../components/api';
+import { api } from '../components/api';
 
 import {
   renderProfile,
   renderAvatar,
   renderLoading,
-} from '../components/utils';
+} from '../utils/utils';
 
 import { enableValidation } from '../components/validate.js';
 
@@ -52,16 +37,16 @@ closeByOverlay();
 enableValidation(formObj);
 
 //  кнопки открытия попапов
-avatarBtn.addEventListener('click', () => openPopup(popupEditAvatar));
-editBtn.addEventListener('click', () => {
+buttons.avatarBtn.addEventListener('click', () => openPopup(popupEditAvatar));
+buttons.editBtn.addEventListener('click', () => {
   openPopup(popupEditProfile);
-  nameInput.value = profileHeading.textContent;
-  jobInput.value = profileDescription.textContent;
+  inputs.userName.value = profileObj.heading.textContent;
+  inputs.userAbout.value = profileObj.description.textContent;
 });
-addBtn.addEventListener('click', () => openPopup(popupAddCard));
+buttons.addBtn.addEventListener('click', () => openPopup(popupAddCard));
 
 //  получение данных с сервера
-Promise.all([getProfile(), getCards()])
+Promise.all([api.getProfile(), api.getCards()])
   .then(([profileData, cardsData]) => {
     renderProfile(profileData.name, profileData.about);
     renderAvatar(profileData.avatar);
@@ -77,8 +62,8 @@ Promise.all([getProfile(), getCards()])
 //сохранение формы аватара профиля
 function handleAvatarFormSubmit(evt) {
   evt.preventDefault();
-  renderLoading(true, editAvatarForm, submitObj.saving, submitObj.save);
-  patchAvatar(avatarInput.value)
+  renderLoading(true, forms.avatar, submitObj.saving, submitObj.save);
+  api.patchAvatar(inputs.avatarUrl.value)
     .then((profile) => {
       renderAvatar(profile.avatar);
       closePopup(popupEditAvatar);
@@ -87,17 +72,17 @@ function handleAvatarFormSubmit(evt) {
       console.log(`Ошибка: ${err}`);
     })
     .finally(() => {
-      renderLoading(false, editAvatarForm, submitObj.saving, submitObj.save);
+      renderLoading(false, forms.avatar, submitObj.saving, submitObj.save);
     });
-  editAvatarForm.reset();
+    forms.avatar.reset();
 }
-editAvatarForm.addEventListener('submit', handleAvatarFormSubmit);
+forms.avatar.addEventListener('submit', handleAvatarFormSubmit);
 
 //сохранение формы редактирования профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  renderLoading(true, editProfileForm, submitObj.saving, submitObj.save);
-  patchProfile(nameInput.value, jobInput.value)
+  renderLoading(true, forms.profile, submitObj.saving, submitObj.save);
+  api.patchProfile(inputs.userName.value, inputs.userAbout.value)
     .then((profileData) => {
       renderProfile(profileData.name, profileData.about);
       closePopup(popupEditProfile);
@@ -106,16 +91,16 @@ function handleProfileFormSubmit(evt) {
       console.log(`Ошибка: ${err}`);
     })
     .finally(() => {
-      renderLoading(false, editProfileForm, submitObj.saving, submitObj.save);
+      renderLoading(false, forms.profile, submitObj.saving, submitObj.save);
     });
 }
-editProfileForm.addEventListener('submit', handleProfileFormSubmit);
+forms.profile.addEventListener('submit', handleProfileFormSubmit);
 
 //сохранение формы новой карточки
 function handlePlaceFormSubmit(evt) {
   evt.preventDefault();
-  renderLoading(true, addNewCardForm, submitObj.saving, submitObj.create);
-  postCard(imageName.value, imageLink.value)
+  renderLoading(true, forms.newCard, submitObj.saving, submitObj.create);
+  api.postCard(inputs.imageName.value, inputs.imageLink.value)
     .then((card) => {
       addCard(createCard( card.link, card.name, card._id, card.likes, card.owner._id));
       closePopup(popupAddCard);
@@ -124,8 +109,8 @@ function handlePlaceFormSubmit(evt) {
       console.log(`Ошибка: ${err}`);
     })
     .finally(() => {
-      renderLoading(false, addNewCardForm, submitObj.saving, submitObj.create);
+      renderLoading(false, forms.newCard, submitObj.saving, submitObj.create);
     });
-  addNewCardForm.reset();
+    forms.newCard.reset();
 }
-addNewCardForm.addEventListener('submit', handlePlaceFormSubmit);
+forms.newCard.addEventListener('submit', handlePlaceFormSubmit);

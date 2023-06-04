@@ -5,13 +5,11 @@ import {
   popupImg,
   popupImgCaption,
   myId,
-} from './constants.js';
+} from '../utils/constants.js';
 
-import {
-  openPopup,
-} from './modal.js';
+import { openPopup } from './modal.js';
 
-import { putLike, deleteLike, deleteCard } from './api.js';
+import { api } from './api.js';
 
 export function checkLikeBtn(button) {
   return button.classList.contains('like-button_active');
@@ -63,7 +61,7 @@ export function addCard (cardElement){
 function handleLikeCard(evt) {
   const targetCard = evt.target.closest('.element');
   if(!checkLikeBtn(evt.target)) {
-    putLike(targetCard.dataset.id)
+    api.putLike(targetCard.dataset.id)
       .then((cardData) => {
         toggleLikeBtn(evt.target);
         renderLikesCounter(targetCard, cardData.likes);
@@ -72,7 +70,7 @@ function handleLikeCard(evt) {
         console.log(`Ошибка: ${err}`);
       });
   } else {
-    deleteLike(targetCard.dataset.id)
+    api.deleteLike(targetCard.dataset.id)
       .then((cardData) => {
         toggleLikeBtn(evt.target);
         renderLikesCounter(targetCard, cardData.likes);
@@ -87,7 +85,7 @@ function handleLikeCard(evt) {
 function handleDeleteCard(evt) {
   evt.preventDefault();
   const targetCard = evt.target.closest('.element');
-  deleteCard(targetCard.dataset.id)
+  api.deleteCard(targetCard.dataset.id)
     .then(() => {
       targetCard.remove();
     })

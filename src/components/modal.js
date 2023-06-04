@@ -1,4 +1,4 @@
-import { popups } from "./constants";
+import { popups } from "../utils/constants";
 
 export function openPopup(element) {
   element.classList.add('popup_opened');

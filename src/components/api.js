@@ -6,108 +6,119 @@ export const config = {
   }
 }
 
+export class Api {
+  // #baseUrl;
+  // #headers;
+  constructor(config) {
+    this._baseUrl = config.baseUrl;
+    this._headers = config.headers
+  }
+
 // проверка результата запроса
-export function checkResponse(res) {
-  return res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`);
-}
+  _checkResponse(res) {
+    return res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`);
+  }
 
 // загрузка информации о пользователе с сервера
-export const getProfile = () => {
-  return fetch(`${config.baseUrl}/users/me`, {
-    method: 'GET',
-    headers: config.headers,
-  })
-  .then((res) => {
-    // console.log(res);
-    return checkResponse(res);
-  });
-}
+  getProfile() {
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: 'GET',
+      headers: this._headers,
+    })
+    .then((res) => {
+      // console.log(res);
+      return this._checkResponse(res);
+    });
+  }
 
 // загрузка карточек с сервера
-export const getCards = () => {
-  return fetch(`${config.baseUrl}/cards`, {
-    method: 'GET',
-    headers: config.headers,
-  })
-  .then((res) => {
-    // console.log(res);
-    return checkResponse(res);
-  })
-}
+  getCards() {
+    return fetch(`${this._baseUrl}/cards`, {
+      method: 'GET',
+      headers: this._headers,
+    })
+    .then((res) => {
+      // console.log(res);
+      return this._checkResponse(res);
+    })
+  }
 
 // редактирование профиля
-export const patchProfile = (name, about) => {
-  return fetch(`${config.baseUrl}/users/me`, {
-    method: 'PATCH',
-    headers: config.headers,
-    body: JSON.stringify({
-      name: name,
-      about: about,
+  patchProfile(name, about) {
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        name: name,
+        about: about,
+      })
     })
-  })
-  .then((res) => {
-    return checkResponse(res)
-  })
-}
+    .then((res) => {
+      return this._checkResponse(res)
+    })
+  }
 
 // добавление новой карточки
-export const postCard = (name, link) => {
-  return fetch(`${config.baseUrl}/cards`, {
-    method: 'POST',
-    headers: config.headers,
-    body: JSON.stringify({
-      name: name,
-      link: link,
+  postCard(name, link) {
+    return fetch(`${this._baseUrl}/cards`, {
+      method: 'POST',
+      headers: this._headers,
+      body: JSON.stringify({
+        name: name,
+        link: link,
+      })
     })
-  })
-  .then((res) => {
-    return checkResponse(res)
-  })
-}
+    .then((res) => {
+      return this._checkResponse(res)
+    })
+  }
 
 // удаление карточки
-export const deleteCard = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/${cardId}`, {
-    method: 'DELETE',
-    headers: config.headers
-  })
-  .then((res) => {
-    return checkResponse(res);
-  })
-}
+  deleteCard(cardId) {
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
+      method: 'DELETE',
+      headers: this._headers
+    })
+    .then((res) => {
+      return this._checkResponse(res);
+    })
+  }
 
 // постановка лайка
-export const putLike = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
-    method: 'PUT',
-    headers: config.headers,
-  })
-  .then((res) => {
-    return checkResponse(res);
-  })
-}
+  putLike(cardId) {
+    return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+      method: 'PUT',
+      headers: this._headers,
+    })
+    .then((res) => {
+      return this._checkResponse(res);
+    })
+  }
 
 // снятие лайка
-export const deleteLike = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
-    method: 'DELETE',
-    headers: config.headers,
-  })
-  .then((res) => {
-    return checkResponse(res);
-  })
-}
+  deleteLike(cardId) {
+    return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+      method: 'DELETE',
+      headers: this._headers,
+    })
+    .then((res) => {
+      return this._checkResponse(res);
+    })
+  }
 
 // обновление аватара пользователя
-export const patchAvatar = (link) => {
-  return fetch(`${config.baseUrl}/users/me/avatar`, {
-    method: 'PATCH',
-    headers: config.headers,
-    body: JSON.stringify({
-      avatar: link,
+  patchAvatar(link) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: link,
+      })
     })
-  })
-  .then((res) => {
-    return checkResponse(res);
-  })
+    .then((res) => {
+      return this._checkResponse(res);
+    })
+  }
 }
+
+export const api = new Api(config);

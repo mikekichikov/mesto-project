@@ -10,7 +10,7 @@ import {
 
 import { openPopup } from './modal.js';
 
-import { api } from './Api.js';
+import { api } from './api.js';
 
 
 export class Card {

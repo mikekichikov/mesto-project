@@ -21,9 +21,9 @@ import {
 import {
   addCard,
   createCard,
-} from '../components/Card.js';
+} from '../components/card.js';
 
-import { api } from '../components/Api';
+import { api } from '../components/api';
 
 import {
   renderProfile,

@@ -33,8 +33,19 @@ export const inputs = {
   imageLink: document.querySelector('.popup__input_type_src')
 }
 // темплейт
+export const cardSelectors = {
+  templateSelector: '.card-template',
+  cardSelector: '. elements',
+  imgSelector: '.element__image',
+  headingSelector: '.element__heading',
+  likeBtnSelector: '.like-button',
+  likeBtnActiveClass: 'like-button_active',
+  deleteBtnSelector: '.delete-button',
+  likesCounterSelector: '.element__likes-couter'
+}
 export const cardTemplate = document.querySelector('.card-template').content;
 export const cardsList = document.querySelector('.elements');
+
 export const popupImgContainer = document.querySelector('.popup-image');
 export const popupImg = document.querySelector('.popup__image');
 export const popupImgCaption = document.querySelector('.popup__image-heading');

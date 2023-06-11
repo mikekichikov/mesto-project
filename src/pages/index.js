@@ -18,12 +18,12 @@ import {
   closeByOverlay, 
 } from '../components/modal.js';
 
-import { 
+import {
   addCard,
   createCard,
-} from '../components/card.js';
+} from '../components/Card.js';
 
-import { api } from '../components/api';
+import { api } from '../components/Api';
 
 import {
   renderProfile,

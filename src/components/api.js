@@ -7,8 +7,6 @@ export const config = {
 }
 
 export class Api {
-  // #baseUrl;
-  // #headers;
   constructor(config) {
     this._baseUrl = config.baseUrl;
     this._headers = config.headers
@@ -26,7 +24,6 @@ export class Api {
       headers: this._headers,
     })
     .then((res) => {
-      // console.log(res);
       return this._checkResponse(res);
     });
   }
@@ -38,7 +35,6 @@ export class Api {
       headers: this._headers,
     })
     .then((res) => {
-      // console.log(res);
       return this._checkResponse(res);
     })
   }

@@ -1,19 +1,25 @@
-import {
-  profileObj
-} from './constants';
+export function handleSubmit(request, evt, popup, loadingText = "Сохранение...") {
+  evt.preventDefault();
+  const submitBtn = evt.submitter;
+  const initialText = submitBtn.textContent;
+  renderSubmitBtn(true, submitBtn, initialText, loadingText);
+  request()
+    .then(() => {
+      popup.close();
+      evt.target.reset();
+    })
+    .catch((err) => {
+      console.error(`Ошибка: ${err}`);
+    })
+    .finally(() => {
+      renderSubmitBtn(false, submitBtn, initialText);
+    });
+};
 
-export function renderProfile(name, about) {
-  profileObj.heading.textContent = name;
-  profileObj.description.textContent = about;
-}
-export function renderAvatar(avatar) {
-  profileObj.avatar.src = avatar;
-}
-export function renderLoading(isLoading, formElement, loadingValue, baseValue) {
-  const buttonElement = formElement.querySelector('.save-button');
-  if(isLoading) {
-    buttonElement.textContent = loadingValue;
+function renderSubmitBtn(isLoading, button, buttonText = 'Сохранить', loadingText = 'Сохранение...') {
+  if (isLoading) {
+    button.textContent = loadingText
   } else {
-    buttonElement.textContent = baseValue;
+    button.textContent = buttonText
   }
 }

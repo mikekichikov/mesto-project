@@ -1,5 +1,13 @@
 export const page = document.querySelector('.page');
 
+export const config = {
+  baseUrl: "https://nomoreparties.co/v1/plus-cohort-24",
+  headers: {
+    authorization: "2d0751a7-a369-43d9-a9c9-33e8b2182ed9",
+    "Content-Type": "application/json",
+  }
+}
+
 // кнопки
 export const buttons = {
   editBtn: page.querySelector('.edit-button'),
@@ -63,9 +71,4 @@ export const formObj = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_active'
 }
-// export const submitObj = {
-//   create: 'Создать',
-//   save: 'Сохранить',
-//   saving: 'Сохранение...',
-// };
 export const myId = '1a595976abb83992213a7e1b';

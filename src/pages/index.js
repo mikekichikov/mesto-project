@@ -1,31 +1,25 @@
 import './index.css'; // импорт стилей
 
 import {
+  config,
   buttons,
   profileObj,
-  forms,
-  popups,
   popupSelectors,
-  // popupEditAvatar,
-  // popupEditProfile,
-  // popupAddCard,
   inputs,
   formObj,
-  submitObj,
   cardSelectors
 } from '../utils/constants.js';
 
-import { Api, config } from '../components/Aapi';
-import Card from '../components/Cardd';
+import Api from '../components/Api';
+import Card from '../components/Card';
 import FormValidator from '../components/FormValidator';
 import PopupWithImage from '../components/PopupWithImage';
 import PopupWithForm from '../components/PopupWithForm';
 import PopupWithConfirm from '../components/PopupWithConfirm';
 import Section from '../components/Section';
 import UserInfo from '../components/UserInfo';
-import { handleSubmit as handleFormSubmit } from '../utils/utils'; // Переименовали функцию handleSubmit
+import { handleFormSubmit } from '../utils/utils';
 
-let userId;
 // экземпляр api
 const api = new Api(config);
 // экземпляр данных пользователя
@@ -58,7 +52,7 @@ formValidProfile.enableValidation();
 formValidCard.enableValidation();
 formValidAvatar.enableValidation();
 
-buttons.editBtn.addEventListener('click', handleEditProfile); // Убрали круглые скобки
+buttons.editBtn.addEventListener('click', handleEditProfile);
 buttons.addBtn.addEventListener('click', () => { popupAddCard.open()});
 buttons.avatarBtn.addEventListener('click', () => { popupEditAvatar.open() });
 
@@ -71,28 +65,24 @@ Promise.all([api.getProfile(), api.getCards()])
   })
   .catch(err => console.log(err))
 
-function submitPopupProfile(evt, { name, about }) {
+function submitPopupProfile(evt) {
   function makePatchProfile() {
-    return api.patchProfile(name, about)
+    return api.patchProfile(inputs.userName.value, inputs.userAbout.value)
       .then(data => {
         user.setUserInfo({ name: data.name, about: data.about });
         user.renderUserInfo();
       })
-      .catch(err => {
-        console.error(`Ошибка: ${err}`);
-        throw err; // Пробросить ошибку дальше
-      });
   }
-  
-  handleFormSubmit(makePatchProfile, evt, popupEditProfile); // Исправили вызов функции handleSubmit
+  handleFormSubmit(makePatchProfile, evt, popupEditProfile); 
 }
 
-function submitPopupAddCard(evt, { link, caption }) {
+function submitPopupAddCard(evt) {
   function makePostCard() {
-    return api.postCard(link, caption)
-      .then(data => { renderCard({ data, position: 'prepend' }) })
+    return api.postCard(inputs.imageLink.value, inputs.imageName.value)
+      .then(data => { renderCard({ data, position: 'prepend' })
+    })
   };
-  handleFormSubmit(makePostCard, evt, popupAddCard); // Исправили вызов функции handleSubmit
+  handleFormSubmit(makePostCard, evt, popupAddCard); 
 }
 
 function submitPopupAvatar(evt, { avatar }) {
@@ -103,19 +93,17 @@ function submitPopupAvatar(evt, { avatar }) {
         user.setUserAvatar();
       });
   }
-  handleFormSubmit(makePatchAvatar, evt, popupEditAvatar); // Исправили вызов функции handleSubmit
+  handleFormSubmit(makePatchAvatar, evt, popupEditAvatar);
 }
 
-function submitDeleteCard(card, evt) {
-  // console.log(card);
+function submitDeleteCard(evt, card) {
   function makeDeleteCard() {
     return api.deleteCard(card)
       .then(() => {
-        console.log(popupConfirm.card);
         popupConfirm.card.deleteCard()
       })
   }
-  handleFormSubmit(makeDeleteCard, evt, popupConfirm, 'Удаление...'); // Исправили вызов функции handleSubmit
+  handleFormSubmit(makeDeleteCard, evt, popupConfirm, 'Удаление...');
 }
 
 function handleEditProfile() {

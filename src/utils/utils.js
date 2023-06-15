@@ -1,4 +1,4 @@
-export function handleSubmit(request, evt, popup, loadingText = "Сохранение...") {
+export function handleFormSubmit(request, evt, popup, loadingText = "Сохранение...") {
   evt.preventDefault();
   const submitBtn = evt.submitter;
   const initialText = submitBtn.textContent;

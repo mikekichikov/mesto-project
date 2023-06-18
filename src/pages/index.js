@@ -110,6 +110,7 @@ function handleEditProfile() {
   const data = user.getUserInfo();
   inputs.userName.value = data.name;
   inputs.userAbout.value = data.about;
+  formValidProfile.resetValidation();
   popupEditProfile.open()
 };
 

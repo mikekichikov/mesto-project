@@ -4,6 +4,7 @@ export default class FormValidator {
     this._formSelector = selectors.formSelector;
     this._inputSelector = selectors.inputSelector;
     this._submitButtonSelector = selectors.submitButtonSelector;
+    this._submitButtonDisabled = selectors.inactiveButtonClass;
     this._inputErrorClass = selectors.inputErrorClass;
     this._errorClass = selectors.errorClass;
   }
@@ -40,32 +41,33 @@ export default class FormValidator {
     });
   }
 
-  disableButton() {
-    this._buttonElement.disabled = true;
-    this._buttonElement.classList.add('save-button_disabled');
-  }
-
   toggleButtonState() {
     if (this._hasInvalidInput()) {
-        this.disableButton();
+        this._buttonElement.setAttribute('disabled', true);
+        this._buttonElement.classList.remove(this._submitButtonDisabled);
     } else {
-        this._buttonElement.disabled = false;
-        this._buttonElement.classList.remove('save-button_disabled');
+        this._buttonElement.removeAttribute('disabled');
+        this._buttonElement.classList.remove(this._submitButtonDisabled);
     }
   }
 
-  enableValidation() {
-    this._buttonElement = this._form.querySelector(this._submitButtonSelector);
-    this._inputList = Array.from(this._form.querySelectorAll(this._inputSelector));
-    this._form.addEventListener("reset", () => {
-        this.disableButton();
-    });
+  resetValidation() {
     this.toggleButtonState();
     this._inputList.forEach((input) => {
-        input.addEventListener('input', () => {
-            this._checkInputValidity(input);
-            this.toggleButtonState();
-        });
+      this._checkInputValidity(input);
+      this._hideInputError(input);
+    })
+  }
+
+  enableValidation() {
+    this._buttonElement = this._formElement.querySelector(this._submitButtonSelector);
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
+    this.toggleButtonState();
+    this._inputList.forEach((input) => {
+      input.addEventListener('input', () => {
+        this._checkInputValidity(input);
+        this.toggleButtonState();
+      });
     });
   }
 }

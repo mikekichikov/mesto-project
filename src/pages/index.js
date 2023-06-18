@@ -18,7 +18,7 @@ import PopupWithForm from '../components/PopupWithForm';
 import PopupWithConfirm from '../components/PopupWithConfirm';
 import Section from '../components/Section';
 import UserInfo from '../components/UserInfo';
-import { handleFormSubmit } from '../utils/utils';
+import { handleSubmit } from '../utils/utils';
 
 // экземпляр api
 const api = new Api(config);
@@ -65,24 +65,24 @@ Promise.all([api.getProfile(), api.getCards()])
   })
   .catch(err => console.log(err))
 
-function submitPopupProfile(evt) {
+function submitPopupProfile(evt, { heading, description }) {
   function makePatchProfile() {
-    return api.patchProfile(inputs.userName.value, inputs.userAbout.value)
+    return api.patchProfile( heading, description)
       .then(data => {
         user.setUserInfo({ name: data.name, about: data.about });
         user.renderUserInfo();
       })
   }
-  handleFormSubmit(makePatchProfile, evt, popupEditProfile); 
+  handleSubmit(makePatchProfile, evt, popupEditProfile); 
 }
 
-function submitPopupAddCard(evt) {
+function submitPopupAddCard(evt, {link, heading}) {
   function makePostCard() {
-    return api.postCard(inputs.imageLink.value, inputs.imageName.value)
+    return api.postCard(link, heading)
       .then(data => { renderCard({ data, position: 'prepend' })
     })
   };
-  handleFormSubmit(makePostCard, evt, popupAddCard); 
+  handleSubmit(makePostCard, evt, popupAddCard); 
 }
 
 function submitPopupAvatar(evt, { avatar }) {
@@ -93,7 +93,7 @@ function submitPopupAvatar(evt, { avatar }) {
         user.setUserAvatar();
       });
   }
-  handleFormSubmit(makePatchAvatar, evt, popupEditAvatar);
+  handleSubmit(makePatchAvatar, evt, popupEditAvatar);
 }
 
 function submitDeleteCard(evt, card) {
@@ -103,13 +103,14 @@ function submitDeleteCard(evt, card) {
         popupConfirm.card.deleteCard()
       })
   }
-  handleFormSubmit(makeDeleteCard, evt, popupConfirm, 'Удаление...');
+  handleSubmit(makeDeleteCard, evt, popupConfirm, 'Удаление...');
 }
 
 function handleEditProfile() {
   const data = user.getUserInfo();
   inputs.userName.value = data.name;
   inputs.userAbout.value = data.about;
+  formValidProfile.resetValidation();
   popupEditProfile.open()
 };
 

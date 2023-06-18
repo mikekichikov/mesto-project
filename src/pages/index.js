@@ -1,131 +1,149 @@
-import './index.css'; //импорт стилей
+import './index.css'; // импорт стилей
 
 import {
-  avatarBtn,
-  editBtn,
-  addBtn,
-  profileHeading,
-  profileDescription,
-  editAvatarForm,
-  editProfileForm,
-  addNewCardForm,
-  popupEditAvatar,
-  popupEditProfile,
-  popupAddCard,
-  avatarInput,
-  nameInput,
-  jobInput,
-  imageName,
-  imageLink,
+  config,
+  buttons,
+  profileObj,
+  popupSelectors,
+  inputs,
   formObj,
-  submitObj,
-} from '../components/constants.js';
+  cardSelectors
+} from '../utils/constants.js';
 
-import {
-  openPopup,
-  closePopup,
-  closeByOverlay, 
-} from '../components/modal.js';
+import Api from '../components/Api';
+import Card from '../components/Card';
+import FormValidator from '../components/FormValidator';
+import PopupWithImage from '../components/PopupWithImage';
+import PopupWithForm from '../components/PopupWithForm';
+import PopupWithConfirm from '../components/PopupWithConfirm';
+import Section from '../components/Section';
+import UserInfo from '../components/UserInfo';
+import { handleSubmit } from '../utils/utils';
 
-import { 
-  addCard,
-  createCard,
-} from '../components/card.js';
-
-import { 
-  getProfile,
-  getCards,
-  patchAvatar,
-  patchProfile,
-  postCard,
-} from '../components/api';
-
-import {
-  renderProfile,
-  renderAvatar,
-  renderLoading,
-} from '../components/utils';
-
-import { enableValidation } from '../components/validate.js';
-
-closeByOverlay();
-enableValidation(formObj);
-
-//  кнопки открытия попапов
-avatarBtn.addEventListener('click', () => openPopup(popupEditAvatar));
-editBtn.addEventListener('click', () => {
-  openPopup(popupEditProfile);
-  nameInput.value = profileHeading.textContent;
-  jobInput.value = profileDescription.textContent;
+// экземпляр api
+const api = new Api(config);
+// экземпляр данных пользователя
+const user = new UserInfo({
+  heading: profileObj.heading,
+  description: profileObj.description,
+  avatar: profileObj.avatar
 });
-addBtn.addEventListener('click', () => openPopup(popupAddCard));
+// экземпляр для рендера карточек
+const cardSection = new Section('.elements', renderCard);
+// экземпляры модальных окон
+const popupEditProfile = new PopupWithForm(popupSelectors.editProfile, submitPopupProfile);
+const popupAddCard = new PopupWithForm(popupSelectors.addCard, submitPopupAddCard);
+const popupEditAvatar = new PopupWithForm(popupSelectors.editAvatar, submitPopupAvatar);
+const popupImage = new PopupWithImage(popupSelectors.imgContainer);
+const popupConfirm = new PopupWithConfirm(popupSelectors.deleteConfirm, submitDeleteCard);
 
-//  получение данных с сервера
-Promise.all([getProfile(), getCards()])
-  .then(([profileData, cardsData]) => {
-    renderProfile(profileData.name, profileData.about);
-    renderAvatar(profileData.avatar);
-    cardsData.reverse().forEach((card) => {
-      addCard(createCard(card.link, card.name, card._id, card.likes, card.owner._id));
-    })
+popupEditProfile.setEventListeners();
+popupAddCard.setEventListeners();
+popupEditAvatar.setEventListeners();
+popupImage.setEventListeners();
+popupConfirm.setEventListeners();
+
+// экземпляры форм валидации
+const formValidProfile = new FormValidator(formObj, popupEditProfile.popup);
+const formValidCard = new FormValidator(formObj, popupAddCard.popup);
+const formValidAvatar = new FormValidator(formObj, popupEditAvatar.popup);
+
+formValidProfile.enableValidation();
+formValidCard.enableValidation();
+formValidAvatar.enableValidation();
+
+buttons.editBtn.addEventListener('click', handleEditProfile);
+buttons.addBtn.addEventListener('click', () => { popupAddCard.open()});
+buttons.avatarBtn.addEventListener('click', () => { popupEditAvatar.open() });
+
+Promise.all([api.getProfile(), api.getCards()])
+  .then(([userData, cards]) => {
+    user.setUserInfo(userData);
+    user.renderUserInfo();
+    user.setUserAvatar();
+    cardSection.renderItems(cards);
   })
-  .catch(([profileDataErr, cardsDataErr]) => {
-    console.log(`Ошибка: ${profileDataErr}`);
-    console.log(`Ошибка: ${cardsDataErr}`);
-  });
+  .catch(err => console.log(err))
 
-//сохранение формы аватара профиля
-function handleAvatarFormSubmit(evt) {
-  evt.preventDefault();
-  renderLoading(true, editAvatarForm, submitObj.saving, submitObj.save);
-  patchAvatar(avatarInput.value)
-    .then((profile) => {
-      renderAvatar(profile.avatar);
-      closePopup(popupEditAvatar);
-    })
-    .catch((err) => {
-      console.log(`Ошибка: ${err}`);
-    })
-    .finally(() => {
-      renderLoading(false, editAvatarForm, submitObj.saving, submitObj.save);
-    });
-  editAvatarForm.reset();
+function submitPopupProfile(evt, { heading, description }) {
+  function makePatchProfile() {
+    return api.patchProfile( heading, description)
+      .then(data => {
+        user.setUserInfo({ name: data.name, about: data.about });
+        user.renderUserInfo();
+      })
+  }
+  handleSubmit(makePatchProfile, evt, popupEditProfile); 
 }
-editAvatarForm.addEventListener('submit', handleAvatarFormSubmit);
 
-//сохранение формы редактирования профиля
-function handleProfileFormSubmit(evt) {
-  evt.preventDefault();
-  renderLoading(true, editProfileForm, submitObj.saving, submitObj.save);
-  patchProfile(nameInput.value, jobInput.value)
-    .then((profileData) => {
-      renderProfile(profileData.name, profileData.about);
-      closePopup(popupEditProfile);
+function submitPopupAddCard(evt, {link, heading}) {
+  function makePostCard() {
+    return api.postCard(link, heading)
+      .then(data => { renderCard({ data, position: 'prepend' })
     })
-    .catch((err) => {
-      console.log(`Ошибка: ${err}`);
-    })
-    .finally(() => {
-      renderLoading(false, editProfileForm, submitObj.saving, submitObj.save);
-    });
+  };
+  handleSubmit(makePostCard, evt, popupAddCard); 
 }
-editProfileForm.addEventListener('submit', handleProfileFormSubmit);
 
-//сохранение формы новой карточки
-function handlePlaceFormSubmit(evt) {
-  evt.preventDefault();
-  renderLoading(true, addNewCardForm, submitObj.saving, submitObj.create);
-  postCard(imageName.value, imageLink.value)
-    .then((card) => {
-      addCard(createCard( card.link, card.name, card._id, card.likes, card.owner._id));
-      closePopup(popupAddCard);
-    })
-    .catch((err) => {
-      console.log(`Ошибка: ${err}`);
-    })
-    .finally(() => {
-      renderLoading(false, addNewCardForm, submitObj.saving, submitObj.create);
-    });
-  addNewCardForm.reset();
+function submitPopupAvatar(evt, { avatar }) {
+  function makePatchAvatar() {
+    return api.patchAvatar(avatar)
+      .then(data => {
+        user.setUserInfo({ avatar: data.avatar })
+        user.setUserAvatar();
+      });
+  }
+  handleSubmit(makePatchAvatar, evt, popupEditAvatar);
 }
-addNewCardForm.addEventListener('submit', handlePlaceFormSubmit);
+
+function submitDeleteCard(evt, card) {
+  function makeDeleteCard() {
+    return api.deleteCard(card)
+      .then(() => {
+        popupConfirm.card.deleteCard()
+      })
+  }
+  handleSubmit(makeDeleteCard, evt, popupConfirm, 'Удаление...');
+}
+
+function handleEditProfile() {
+  const data = user.getUserInfo();
+  inputs.userName.value = data.name;
+  inputs.userAbout.value = data.about;
+  formValidProfile.resetValidation();
+  popupEditProfile.open()
+};
+
+function renderCard({ data, position }) {
+  const newCard = new Card(data, cardSelectors.templateSelector, user.userId, handleLikeCard, handleClickCard, handleDeleteCard).createCard();
+  cardSection.addItem(newCard, position);
+}
+
+function handleLikeCard(card) {
+  if (!card.checkLikes()) {
+    api.putLike(card)
+    .then(data => {
+      card.likes = data.likes;
+      card.toggleLikeBtn();
+      card.renderLikesCounter();
+    })
+    .catch(err => console.log(err))
+  } else {
+    api.deleteLike(card)
+    .then(data => {
+      card.likes = data.likes;
+      card.toggleLikeBtn();
+      card.renderLikesCounter();
+    })
+    .catch(err => console.log(err))
+  }
+};
+
+function handleClickCard(card) {
+  popupImage.open(card);
+};
+
+function handleDeleteCard(card) {
+  popupConfirm.open();
+  popupConfirm.getCard(card);
+}

@@ -65,9 +65,9 @@ Promise.all([api.getProfile(), api.getCards()])
   })
   .catch(err => console.log(err))
 
-function submitPopupProfile(evt, {heading, description}) {
+function submitPopupProfile(evt, { heading, description }) {
   function makePatchProfile() {
-    return api.patchProfile(heading, description)
+    return api.patchProfile( heading, description)
       .then(data => {
         user.setUserInfo({ name: data.name, about: data.about });
         user.renderUserInfo();

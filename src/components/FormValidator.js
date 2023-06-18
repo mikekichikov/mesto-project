@@ -1,6 +1,6 @@
 export default class FormValidator {
   constructor(selectors, form) {
-    this._form = form;
+    this._formElement = form;
     this._formSelector = selectors.formSelector;
     this._inputSelector = selectors.inputSelector;
     this._submitButtonSelector = selectors.submitButtonSelector;
@@ -10,14 +10,14 @@ export default class FormValidator {
   }
 
   _showInputError(input, errorMessage) {
-    const errorElement = this._form.querySelector(`.${input.id}-error`);
+    const errorElement = this._formElement.querySelector(`.${input.id}-error`);
     input.classList.add(this._inputErrorClass);
     errorElement.textContent = errorMessage;
     errorElement.classList.add(this._errorClass);
   }
   
   _hideInputError(input) {
-    const errorElement = this._form.querySelector(`.${input.id}-error`);
+    const errorElement = this._formElement.querySelector(`.${input.id}-error`);
     input.classList.remove(this._inputErrorClass);
     errorElement.classList.remove(this._errorClass);
     errorElement.textContent = "";
@@ -35,6 +35,7 @@ export default class FormValidator {
         this._hideInputError(input);
     }
   }
+
   _hasInvalidInput() {
     return this._inputList.some((input) => {
       return !input.validity.valid;
@@ -43,11 +44,11 @@ export default class FormValidator {
 
   toggleButtonState() {
     if (this._hasInvalidInput()) {
-        this._buttonElement.setAttribute('disabled', true);
-        this._buttonElement.classList.remove(this._submitButtonDisabled);
-    } else {
-        this._buttonElement.removeAttribute('disabled');
-        this._buttonElement.classList.remove(this._submitButtonDisabled);
+      this._buttonElement.setAttribute('disabled', true);
+      this._buttonElement.classList.add(this._submitButtonDisabled);
+      } else {
+      this._buttonElement.removeAttribute('disabled');
+      this._buttonElement.classList.remove(this._submitButtonDisabled);
     }
   }
 
